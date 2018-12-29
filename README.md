@@ -1,6 +1,6 @@
 ## Intro
 
-**Tumblr Api for Rust**
+**Tumblr API for Rust**
 
 #### Usage
 
