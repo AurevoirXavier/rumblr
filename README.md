@@ -12,6 +12,19 @@ extern crate rumblr;
 use rumblr::TumblrClient;
 
 fn main() {
+    // OAUTH
+    const CONSUMER_KEY: &'static str = "YOUR CONSUMER KEY";
+    const CONSUMER_SECRET: &'static str = "YOUR CONSUMER SECRET";
+
+    let client = TumblrClient::new()
+        .set_consumer(CONSUMER_KEY, CONSUMER_SECRET)
+        .proxy("http://127.0.0.1:1087")
+        .unwrap()
+        .oauth();
+
+    client.save_keys("rumblr.keys").unwrap();
+
+    // Already OAUTHed
     let client = TumblrClient::new()
         .proxy("http://127.0.0.1:1087")
         .unwrap()
