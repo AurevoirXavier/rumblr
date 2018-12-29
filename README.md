@@ -4,7 +4,7 @@
 
 #### Usage
 
-Create a new photo post:
+E.g. [Create a new photo post](https://www.tumblr.com/docs/en/api/v2#post--create-a-new-blog-post-legacy):
 
 ```rust
 extern crate rumblr;
