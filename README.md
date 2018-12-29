@@ -34,7 +34,7 @@ fn main() {
     println!(
         "{:?}",
         client.legacy_post(
-            "cestxavier.tumblr.com",
+            "your tumblr domain [e.g. (david.tumblr.com)]",
             None,
             None,
             None,
