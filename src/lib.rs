@@ -1,7 +1,6 @@
 #[macro_use]
 extern crate failure;
 extern crate oauth_client;
-extern crate rand;
 extern crate reqwest;
 extern crate serde;
 #[macro_use]
