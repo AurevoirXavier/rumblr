@@ -29,6 +29,32 @@ pub enum PostType<'a> {
         data: Option<Vec<&'a str>>,
         data64: Option<&'a str>,
     },
+    Quote {
+        quote: &'a str,
+        source: Option<&'a str>,
+    },
+    Link {
+        title: Option<&'a str>,
+        url: &'a str,
+        description: Option<&'a str>,
+        thumbnail: Option<&'a str>,
+        excerpt: Option<&'a str>,
+        author: Option<&'a str>,
+    },
+    Chat {
+        title: Option<&'a str>,
+        conversation: &'a str,
+    },
+    Audio {
+        caption: Option<&'a str>,
+        external_url: Option<&'a str>,
+        data: Option<&'a str>,
+    },
+    Video {
+        caption: Option<&'a str>,
+        embed: Option<&'a str>,
+        data: Option<&'a str>,
+    },
 }
 
 impl TumblrClient {
@@ -338,6 +364,41 @@ impl TumblrClient {
                             } else {
                                 panic!("one of [source, data, data64] must be specify")
                             }
+                        }
+                    }
+                }
+                Quote { quote, source } => {
+                    v.push(("type", "quote"));
+                    v.push(("quote", quote));
+                    if let Some(source) = source { v.push(("source", source)); }
+                }
+                Link { title, url, description, thumbnail, excerpt, author } => {
+                    v.push(("type", "link"));
+                    v.push(("url", url));
+                    if let Some(title) = title { v.push(("title", title)); }
+                    if let Some(description) = description { v.push(("description", description)); }
+                    if let Some(thumbnail) = thumbnail { v.push(("thumbnail", thumbnail)); }
+                    if let Some(excerpt) = excerpt { v.push(("excerpt", excerpt)); }
+                    if let Some(author) = author { v.push(("author", author)); }
+                }
+                Chat { title, conversation } => {
+                    v.push(("type", "chat"));
+                    v.push(("conversation", conversation));
+                    if let Some(title) = title { v.push(("title", title)); }
+                }
+                Audio { caption, external_url, data } => {
+                    v.push(("type", "audio"));
+                    if let Some(external_url) = external_url { v.push(("external_url", external_url)); } else {
+                        if let Some(data) = data { v.push(("data", data)); } else {
+                            panic!("one of [external_url, data] must be specify")
+                        }
+                    }
+                }
+                Video { caption, embed, data } => {
+                    v.push(("type", "video"));
+                    if let Some(embed) = embed { v.push(("embed", embed)); } else {
+                        if let Some(data) = data { v.push(("data", data)); } else {
+                            panic!("one of [embed, data] must be specify")
                         }
                     }
                 }
