@@ -388,6 +388,7 @@ impl TumblrClient {
                 }
                 Audio { caption, external_url, data } => {
                     v.push(("type", "audio"));
+                    if let Some(caption) = caption { v.push(("caption", caption)); }
                     if let Some(external_url) = external_url { v.push(("external_url", external_url)); } else {
                         if let Some(data) = data { v.push(("data", data)); } else {
                             panic!("one of [external_url, data] must be specify")
@@ -396,6 +397,7 @@ impl TumblrClient {
                 }
                 Video { caption, embed, data } => {
                     v.push(("type", "video"));
+                    if let Some(caption) = caption { v.push(("caption", caption)); }
                     if let Some(embed) = embed { v.push(("embed", embed)); } else {
                         if let Some(data) = data { v.push(("data", data)); } else {
                             panic!("one of [embed, data] must be specify")
