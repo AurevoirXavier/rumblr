@@ -143,7 +143,7 @@ impl TumblrClient {
             "{}{}/posts{}?api_key={}",
             BLOG,
             blog_identifier,
-            if let Some(r#type) = r#type { r#type } else { "" },
+            if let Some(r#type) = r#type { format!("/{}", r#type) } else { String::new() },
             self.keys.consumer_key,
         );
         if let Some(id) = id { url += &format!("&id={}", id); }
