@@ -35,6 +35,13 @@ impl<'a> GetUserDashboardRequest<'a> {
     set_attr!(self, r#notes_info, &'a str);
 }
 
+pub struct GetUserLikesRequest<'a> {
+    limit: Option<&'a str>,
+    offset: Option<&'a str>,
+    before: Option<&'a str>,
+    after: Option<&'a str>,
+}
+
 impl TumblrClient {
     pub fn get_user_info(&self) -> Value {
         let headers = build_oauth_headers(
@@ -51,14 +58,14 @@ impl TumblrClient {
     }
 
     pub fn get_user_dashboard(&self, request: GetUserDashboardRequest) -> Value {
-        let params = set_params! {
+        let params = set_params! [
             ("limit", request.limit),
             ("offset", request.offset),
             ("type", request.r#type),
             ("since_id", request.since_id),
             ("reblog_info", request.reblog_info),
             ("notes_info", request.notes_info)
-        };
+        ];
         let url = build_query(api::DASHBOARD, &params);
         let headers = build_oauth_headers(
             "GET",
