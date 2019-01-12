@@ -14,13 +14,30 @@ impl<'a> GetBlogAvatarRequest<'a> {
 
     pub fn size(mut self, size: &'a str) -> Self {
         match size {
-            "16"| "24"| "30"| "40"| "48"| "64"| "96"| "128"| "512" => {
+            "16" | "24" | "30" | "40" | "48" | "64" | "96" | "128" | "512" => {
                 self.size = Some(size);
                 self
-            },
+            }
             _ => panic!("The size of the avatar (square, one value for both length and width). Must be one of the values: 16, 24, 30, 40, 48, 64, 96, 128, 512")
         }
     }
+}
+
+#[derive(Default)]
+pub struct GetBlogLikesRequest<'a> {
+    limit: Option<&'a str>,
+    offset: Option<&'a str>,
+    before: Option<&'a str>,
+    after: Option<&'a str>,
+}
+
+impl<'a> GetBlogLikesRequest<'a> {
+    pub fn new() -> GetBlogLikesRequest<'a> { GetBlogLikesRequest::default() }
+
+    set_attr!(self, limit, &'a str);
+    set_attr!(self, offset, &'a str);
+    set_attr!(self, before, &'a str);
+    set_attr!(self, after, &'a str);
 }
 
 pub enum PostAction<'a> {
@@ -94,19 +111,17 @@ impl TumblrClient {
         bytes
     }
 
-    pub fn get_blog_likes(
-        &self,
-        blog_identifier: &str,
-        limit: Option<&str>,
-        offset: Option<&str>,
-        before: Option<&str>,
-        after: Option<&str>,
-    ) -> Value {
+    pub fn get_blog_likes(&self, blog_identifier: &str, request: GetBlogLikesRequest) -> Value {
         let mut url = format!("{}{}/likes?api_key={}", BLOG, blog_identifier, self.keys.consumer_key);
-        if let Some(limit) = limit { url += &format!("&limit={}", limit); }
-        if let Some(offset) = offset { url += &format!("&offset={}", offset); }
-        if let Some(before) = before { url += &format!("&before={}", before); }
-        if let Some(after) = after { url += &format!("&after={}", after); }
+        build_url!(
+            url,
+            [
+                ("limit", request.limit),
+                ("offset", request.offset),
+                ("before", request.before),
+                ("after", request.after)
+            ]
+        );
 
         self.get(&url, None)
             .json()
