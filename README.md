@@ -35,7 +35,7 @@ fn main() {
     println!(
         "{:?}",
         client.legacy_post(
-            "cestxavier.tumblr.com",
+            "your tumblr domain [e.g. (david.tumblr.com)]",
             rumblr::PostAction::New,
             rumblr::PostType::Photo {
                 caption: None,
@@ -70,7 +70,7 @@ fn main() {
     let limit = 10;
     for i in 0u32.. {
         let resp: Value = client.get_blog_posts(
-            "h2artbeat.tumblr.com",
+            "target tumblr domain [e.g. (david.tumblr.com)]",
             Some(
                 GetBlogPostsOptionalParams::new()
                     .r#type("photo")
