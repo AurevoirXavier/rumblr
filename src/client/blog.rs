@@ -7,10 +7,10 @@ use super::{TumblrClient, build_oauth_headers, build_query, build_params};
 const BLOG: &'static str = "https://api.tumblr.com/v2/blog/";
 
 #[derive(Default)]
-pub struct GetBlogAvatarRequest<'a> { size: Option<&'a str> }
+pub struct GetBlogAvatarOptionalParams<'a> { size: Option<&'a str> }
 
-impl<'a> GetBlogAvatarRequest<'a> {
-    pub fn new() -> GetBlogAvatarRequest<'a> { GetBlogAvatarRequest::default() }
+impl<'a> GetBlogAvatarOptionalParams<'a> {
+    pub fn new() -> GetBlogAvatarOptionalParams<'a> { GetBlogAvatarOptionalParams::default() }
 
     pub fn size(mut self, size: &'a str) -> Self {
         match size {
@@ -24,20 +24,20 @@ impl<'a> GetBlogAvatarRequest<'a> {
 }
 
 #[derive(Default)]
-pub struct GetBlogLikesRequest<'a> {
+pub struct GetBlogLikesOptionalParams<'a> {
     limit: Option<&'a str>,
     offset: Option<&'a str>,
     before: Option<&'a str>,
     after: Option<&'a str>,
 }
 
-impl<'a> GetBlogLikesRequest<'a> {
-    pub fn new() -> GetBlogLikesRequest<'a> { GetBlogLikesRequest::default() }
+impl<'a> GetBlogLikesOptionalParams<'a> {
+    pub fn new() -> GetBlogLikesOptionalParams<'a> { GetBlogLikesOptionalParams::default() }
 
-    set_attr!(self, limit, &'a str);
-    set_attr!(self, offset, &'a str);
-    set_attr!(self, before, &'a str);
-    set_attr!(self, after, &'a str);
+    set_attr!(self, limit);
+    set_attr!(self, offset);
+    set_attr!(self, before);
+    set_attr!(self, after);
 }
 
 #[derive(Default)]
@@ -49,25 +49,25 @@ pub struct GetBlogFollowingRequest<'a> {
 impl<'a> GetBlogFollowingRequest<'a> {
     pub fn new() -> GetBlogFollowingRequest<'a> { GetBlogFollowingRequest::default() }
 
-    set_attr!(self, limit, &'a str);
-    set_attr!(self, offset, &'a str);
+    set_attr!(self, limit);
+    set_attr!(self, offset);
 }
 
 #[derive(Default)]
-pub struct GetBlogFollowersRequest<'a> {
+pub struct GetBlogFollowersOptionalParams<'a> {
     limit: Option<&'a str>,
     offset: Option<&'a str>,
 }
 
-impl<'a> GetBlogFollowersRequest<'a> {
-    pub fn new() -> GetBlogFollowersRequest<'a> { GetBlogFollowersRequest::default() }
+impl<'a> GetBlogFollowersOptionalParams<'a> {
+    pub fn new() -> GetBlogFollowersOptionalParams<'a> { GetBlogFollowersOptionalParams::default() }
 
-    set_attr!(self, limit, &'a str);
-    set_attr!(self, offset, &'a str);
+    set_attr!(self, limit);
+    set_attr!(self, offset);
 }
 
 #[derive(Default)]
-pub struct GetBlogPostsRequest<'a> {
+pub struct GetBlogPostsOptionalParams<'a> {
     r#type: Option<&'a str>,
     id: Option<&'a str>,
     tag: Option<&'a str>,
@@ -79,59 +79,59 @@ pub struct GetBlogPostsRequest<'a> {
     before: Option<&'a str>,
 }
 
-impl<'a> GetBlogPostsRequest<'a> {
-    pub fn new() -> GetBlogPostsRequest<'a> { GetBlogPostsRequest::default() }
+impl<'a> GetBlogPostsOptionalParams<'a> {
+    pub fn new() -> GetBlogPostsOptionalParams<'a> { GetBlogPostsOptionalParams::default() }
 
-    set_attr!(self, r#type, &'a str);
-    set_attr!(self, id, &'a str);
-    set_attr!(self, tag, &'a str);
-    set_attr!(self, limit, &'a str);
-    set_attr!(self, offset, &'a str);
-    set_attr!(self, reblog_info, &'a str);
-    set_attr!(self, notes_info, &'a str);
-    set_attr!(self, filter, &'a str);
-    set_attr!(self, before, &'a str);
+    set_attr!(self, r#type);
+    set_attr!(self, id);
+    set_attr!(self, tag);
+    set_attr!(self, limit);
+    set_attr!(self, offset);
+    set_attr!(self, reblog_info);
+    set_attr!(self, notes_info);
+    set_attr!(self, filter);
+    set_attr!(self, before);
 }
 
 #[derive(Default)]
-pub struct GetBlogPostsQueueRequest<'a> {
+pub struct GetBlogPostsQueueOptionalParams<'a> {
     limit: Option<&'a str>,
     offset: Option<&'a str>,
     filter: Option<&'a str>,
 }
 
-impl<'a> GetBlogPostsQueueRequest<'a> {
-    pub fn new() -> GetBlogPostsQueueRequest<'a> { GetBlogPostsQueueRequest::default() }
+impl<'a> GetBlogPostsQueueOptionalParams<'a> {
+    pub fn new() -> GetBlogPostsQueueOptionalParams<'a> { GetBlogPostsQueueOptionalParams::default() }
 
-    set_attr!(self, limit, &'a str);
-    set_attr!(self, offset, &'a str);
-    set_attr!(self, filter, &'a str);
+    set_attr!(self, limit);
+    set_attr!(self, offset);
+    set_attr!(self, filter);
 }
 
 #[derive(Default)]
-pub struct GetBlogPostsDraftRequest<'a> {
+pub struct GetBlogPostsDraftOptionalParams<'a> {
     before_id: Option<&'a str>,
     filter: Option<&'a str>,
 }
 
-impl<'a> GetBlogPostsDraftRequest<'a> {
-    pub fn new() -> GetBlogPostsDraftRequest<'a> { GetBlogPostsDraftRequest::default() }
+impl<'a> GetBlogPostsDraftOptionalParams<'a> {
+    pub fn new() -> GetBlogPostsDraftOptionalParams<'a> { GetBlogPostsDraftOptionalParams::default() }
 
-    set_attr!(self, before_id, &'a str);
-    set_attr!(self, filter, &'a str);
+    set_attr!(self, before_id);
+    set_attr!(self, filter);
 }
 
 #[derive(Default)]
-pub struct GetBlogPostsSubmissionRequest<'a> {
+pub struct GetBlogPostsSubmissionOptionalParams<'a> {
     offset: Option<&'a str>,
     filter: Option<&'a str>,
 }
 
-impl<'a> GetBlogPostsSubmissionRequest<'a> {
-    pub fn new() -> GetBlogPostsSubmissionRequest<'a> { GetBlogPostsSubmissionRequest::default() }
+impl<'a> GetBlogPostsSubmissionOptionalParams<'a> {
+    pub fn new() -> GetBlogPostsSubmissionOptionalParams<'a> { GetBlogPostsSubmissionOptionalParams::default() }
 
-    set_attr!(self, offset, &'a str);
-    set_attr!(self, filter, &'a str);
+    set_attr!(self, offset);
+    set_attr!(self, filter);
 }
 
 pub enum PostAction<'a> {
@@ -186,7 +186,7 @@ pub enum PostType<'a> {
 }
 
 #[derive(Default)]
-pub struct LegacyPostRequest<'a> {
+pub struct LegacyPostOptionalParams<'a> {
     state: Option<&'a str>,
     tags: Option<&'a str>,
     tweet: Option<&'a str>,
@@ -196,16 +196,16 @@ pub struct LegacyPostRequest<'a> {
     native_inline_images: Option<&'a str>,
 }
 
-impl<'a> LegacyPostRequest<'a> {
-    pub fn new() -> LegacyPostRequest<'a> { LegacyPostRequest::default() }
+impl<'a> LegacyPostOptionalParams<'a> {
+    pub fn new() -> LegacyPostOptionalParams<'a> { LegacyPostOptionalParams::default() }
 
-    set_attr!(self, state, &'a str);
-    set_attr!(self, tags, &'a str);
-    set_attr!(self, tweet, &'a str);
-    set_attr!(self, date, &'a str);
-    set_attr!(self, format, &'a str);
-    set_attr!(self, slug, &'a str);
-    set_attr!(self, native_inline_images, &'a str);
+    set_attr!(self, state);
+    set_attr!(self, tags);
+    set_attr!(self, tweet);
+    set_attr!(self, date);
+    set_attr!(self, format);
+    set_attr!(self, slug);
+    set_attr!(self, native_inline_images);
 }
 
 impl TumblrClient {
@@ -216,9 +216,11 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_avatar(&self, blog_identifier: &str, request: GetBlogAvatarRequest) -> Vec<u8> {
+    pub fn get_blog_avatar(&self, blog_identifier: &str, optional_params: Option<GetBlogAvatarOptionalParams>) -> Vec<u8> {
         let mut url = format!("{}{}/avatar/", BLOG, blog_identifier);
-        if let Some(size) = request.size { url += size; }
+        if let Some(optional_params) = optional_params {
+            if let Some(size) = optional_params.size { url += size; }
+        }
 
         let mut bytes = vec![];
         self.get(&url, None)
@@ -228,17 +230,19 @@ impl TumblrClient {
         bytes
     }
 
-    pub fn get_blog_likes(&self, blog_identifier: &str, request: GetBlogLikesRequest) -> Value {
+    pub fn get_blog_likes(&self, blog_identifier: &str, optional_params: Option<GetBlogLikesOptionalParams>) -> Value {
         let mut url = format!("{}{}/likes?api_key={}", BLOG, blog_identifier, self.keys.consumer_key);
-        build_url!(
-            url,
-            [
-                ("limit", request.limit),
-                ("offset", request.offset),
-                ("before", request.before),
-                ("after", request.after)
-            ]
-        );
+        if let Some(optional_params) = optional_params {
+            build_url!(
+                url,
+                [
+                    ("limit", optional_params.limit),
+                    ("offset", optional_params.offset),
+                    ("before", optional_params.before),
+                    ("after", optional_params.after)
+                ]
+            );
+        }
 
         self.get(&url, None)
             .json()
@@ -265,12 +269,14 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_followers(&self, blog_identifier: &str, request: GetBlogFollowersRequest) -> Value {
+    pub fn get_blog_followers(&self, blog_identifier: &str, optional_params: Option<GetBlogFollowersOptionalParams>) -> Value {
         let api = format!("{}{}/followers", BLOG, blog_identifier);
-        let params = set_params![
-            ("limit", request.limit),
-            ("offset", request.offset)
-        ];
+        let params = if let Some(optional_params) = optional_params {
+            set_params![
+                ("limit", optional_params.limit),
+                ("offset", optional_params.offset)
+            ]
+        } else { vec![] };
         let url = build_query(&api, &params);
         let headers = build_oauth_headers(
             "GET",
@@ -285,41 +291,55 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_posts(&self, blog_identifier: &str, request: GetBlogPostsRequest) -> Value {
-        let mut url = format!(
-            "{}{}/posts{}?api_key={}",
-            BLOG,
-            blog_identifier,
-            if let Some(r#type) = request.r#type { format!("/{}", r#type) } else { String::new() },
-            self.keys.consumer_key,
-        );
-        build_url!(
-            url,
-            [
-                ("type", request.r#type),
-                ("id", request.id),
-                ("tag", request.tag),
-                ("limit", request.limit),
-                ("offset", request.offset),
-                ("reblog_info", request.reblog_info),
-                ("notes_info", request.notes_info),
-                ("filter", request.filter),
-                ("before", request.before)
-            ]
-        );
+    pub fn get_blog_posts(&self, blog_identifier: &str, optional_params: Option<GetBlogPostsOptionalParams>) -> Value {
+        let url = if let Some(optional_params) = optional_params {
+            let mut url = format!(
+                "{}{}/posts{}?api_key={}",
+                BLOG,
+                blog_identifier,
+                if let Some(r#type) = optional_params.r#type { format!("/{}", r#type) } else { String::new() },
+                self.keys.consumer_key,
+            );
+            build_url!(
+                url,
+                [
+                    ("type", optional_params.r#type),
+                    ("id", optional_params.id),
+                    ("tag", optional_params.tag),
+                    ("limit", optional_params.limit),
+                    ("offset", optional_params.offset),
+                    ("reblog_info", optional_params.reblog_info),
+                    ("notes_info", optional_params.notes_info),
+                    ("filter", optional_params.filter),
+                    ("before", optional_params.before)
+                ]
+            );
+
+            url
+        } else {
+            format!(
+                "{}{}/posts{}?api_key={}",
+                BLOG,
+                blog_identifier,
+                String::new(),
+                self.keys.consumer_key,
+            )
+        };
 
         self.get(&url, None)
             .json()
             .unwrap()
     }
 
-    pub fn get_blog_posts_queue(&self, blog_identifier: &str, request: GetBlogPostsQueueRequest) -> Value {
+    pub fn get_blog_posts_queue(&self, blog_identifier: &str, optional_params: Option<GetBlogPostsQueueOptionalParams>) -> Value {
         let api = format!("{}{}/posts/queue", BLOG, blog_identifier);
-        let params = set_params![
-            ("limit", request.limit),
-            ("offset", request.offset),
-            ("filter", request.filter)
-        ];
+        let params = if let Some(optional_params) = optional_params {
+            set_params![
+                ("limit", optional_params.limit),
+                ("offset", optional_params.offset),
+                ("filter", optional_params.filter)
+            ]
+        } else { vec![] };
         let url = build_query(&api, &params);
         let headers = build_oauth_headers(
             "GET",
@@ -334,12 +354,14 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_posts_draft(&self, blog_identifier: &str, request: GetBlogPostsDraftRequest) -> Value {
+    pub fn get_blog_posts_draft(&self, blog_identifier: &str, optional_params: Option<GetBlogPostsDraftOptionalParams>) -> Value {
         let api = format!("{}{}/posts/draft", BLOG, blog_identifier);
-        let params = set_params![
-            ("before_id", request.before_id),
-            ("filter", request.filter)
-        ];
+        let params = if let Some(optional_params) = optional_params {
+            set_params![
+               ("before_id", optional_params.before_id),
+               ("filter", optional_params.filter)
+          ]
+        } else { vec![] };
         let url = build_query(&api, &params);
         let headers = build_oauth_headers(
             "GET",
@@ -354,12 +376,14 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_posts_submission(&self, blog_identifier: &str, request: GetBlogPostsSubmissionRequest) -> Value {
+    pub fn get_blog_posts_submission(&self, blog_identifier: &str, optional_params: Option<GetBlogPostsSubmissionOptionalParams>) -> Value {
         let api = format!("{}{}/posts/submission", BLOG, blog_identifier);
-        let params = set_params![
-            ("offset", request.offset),
-            ("filter", request.filter)
-        ];
+        let params = if let Some(optional_params) = optional_params {
+            set_params![
+                ("offset", optional_params.offset),
+                ("filter", optional_params.filter)
+            ]
+        } else { vec![] };
         let url = build_query(&api, &params);
         let headers = build_oauth_headers(
             "GET",
@@ -374,7 +398,7 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn legacy_post(&self, blog_identifier: &str, posts_action: PostAction, posts_type: PostType, request: LegacyPostRequest, ) -> Value {
+    pub fn legacy_post(&self, blog_identifier: &str, posts_action: PostAction, posts_type: PostType, optional_params: Option<LegacyPostOptionalParams>) -> Value {
         // --- custom ---
         use self::{
             PostAction::*,
@@ -383,15 +407,17 @@ impl TumblrClient {
 
         let api;
         let params = {
-            let mut v = set_params![
-                ("state", request.state),
-                ("tags", request.tags),
-                ("tweet", request.tweet),
-                ("date", request.date),
-                ("format", request.format),
-                ("slug", request.slug),
-                ("native_inline_images", request.native_inline_images),
-            ];
+            let mut v = if let Some(optional_params) = optional_params {
+                set_params![
+                    ("state", optional_params.state),
+                    ("tags", optional_params.tags),
+                    ("tweet", optional_params.tweet),
+                    ("date", optional_params.date),
+                    ("format", optional_params.format),
+                    ("slug", optional_params.slug),
+                    ("native_inline_images", optional_params.native_inline_images)
+                ]
+            } else { vec![] };
 
             match posts_action {
                 New => {

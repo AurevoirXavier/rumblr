@@ -17,7 +17,7 @@ use serde_json::Value;
 use super::{TumblrClient, build_oauth_headers, build_query, build_params};
 
 #[derive(Default)]
-pub struct GetUserDashboardRequest<'a> {
+pub struct GetUserDashboardOptionalParams<'a> {
     limit: Option<&'a str>,
     offset: Option<&'a str>,
     r#type: Option<&'a str>,
@@ -26,45 +26,39 @@ pub struct GetUserDashboardRequest<'a> {
     notes_info: Option<&'a str>,
 }
 
-impl<'a> GetUserDashboardRequest<'a> {
-    pub fn new() -> GetUserDashboardRequest<'a> { GetUserDashboardRequest::default() }
-
-    set_attr!(self, limit, &'a str);
-    set_attr!(self, offset, &'a str);
-    set_attr!(self, r#type, &'a str);
-    set_attr!(self, since_id, &'a str);
-    set_attr!(self, reblog_info, &'a str);
-    set_attr!(self, notes_info, &'a str);
+impl<'a> GetUserDashboardOptionalParams<'a> {
+    set_attr!(self, limit);
+    set_attr!(self, offset);
+    set_attr!(self, r#type);
+    set_attr!(self, since_id);
+    set_attr!(self, reblog_info);
+    set_attr!(self, notes_info);
 }
 
 #[derive(Default)]
-pub struct GetUserLikesRequest<'a> {
+pub struct GetUserLikesOptionalParams<'a> {
     limit: Option<&'a str>,
     offset: Option<&'a str>,
     before: Option<&'a str>,
     after: Option<&'a str>,
 }
 
-impl<'a> GetUserLikesRequest<'a> {
-    pub fn new() -> GetUserLikesRequest<'a> { GetUserLikesRequest::default() }
-
-    set_attr!(self, limit, &'a str);
-    set_attr!(self, offset, &'a str);
-    set_attr!(self, before, &'a str);
-    set_attr!(self, after, &'a str);
+impl<'a> GetUserLikesOptionalParams<'a> {
+    set_attr!(self, limit);
+    set_attr!(self, offset);
+    set_attr!(self, before);
+    set_attr!(self, after);
 }
 
 #[derive(Default)]
-pub struct GetUserFollowingRequest<'a> {
+pub struct GetUserFollowingOptionalParams<'a> {
     limit: Option<&'a str>,
     offset: Option<&'a str>,
 }
 
-impl<'a> GetUserFollowingRequest<'a> {
-    pub fn new() -> GetUserFollowingRequest<'a> { GetUserFollowingRequest::default() }
-
-    set_attr!(self, limit, &'a str);
-    set_attr!(self, offset, &'a str);
+impl<'a> GetUserFollowingOptionalParams<'a> {
+    set_attr!(self, limit);
+    set_attr!(self, offset);
 }
 
 impl TumblrClient {
@@ -82,15 +76,17 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_user_dashboard(&self, request: GetUserDashboardRequest) -> Value {
-        let params = set_params![
-            ("limit", request.limit),
-            ("offset", request.offset),
-            ("type", request.r#type),
-            ("since_id", request.since_id),
-            ("reblog_info", request.reblog_info),
-            ("notes_info", request.notes_info)
-        ];
+    pub fn get_user_dashboard(&self, optional_params: Option<GetUserDashboardOptionalParams>) -> Value {
+        let params = if let Some(optional_params) = optional_params {
+            set_params![
+                ("limit", optional_params.limit),
+                ("offset", optional_params.offset),
+                ("type", optional_params.r#type),
+                ("since_id", optional_params.since_id),
+                ("reblog_info", optional_params.reblog_info),
+                ("notes_info", optional_params.notes_info)
+            ]
+        } else { vec![] };
         let url = build_query(api::DASHBOARD, &params);
         let headers = build_oauth_headers(
             "GET",
@@ -105,13 +101,15 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_user_likes(&self, request: GetUserLikesRequest) -> Value {
-        let params = set_params![
-            ("limit", request.limit),
-            ("offset", request.offset),
-            ("before", request.before),
-            ("after", request.after)
-        ];
+    pub fn get_user_likes(&self, optional_params: Option<GetUserLikesOptionalParams>) -> Value {
+        let params = if let Some(optional_params) = optional_params {
+            set_params![
+                ("limit", optional_params.limit),
+                ("offset", optional_params.offset),
+                ("before", optional_params.before),
+                ("after", optional_params.after)
+            ]
+        } else { vec![] };
         let url = build_query(api::LIKES, &params);
         let headers = build_oauth_headers(
             "GET",
@@ -126,11 +124,13 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_user_following(&self, request: GetUserFollowingRequest) -> Value {
-        let params = set_params![
-            ("limit", request.limit),
-            ("offset", request.offset)
-        ];
+    pub fn get_user_following(&self, optional_params: Option<GetUserFollowingOptionalParams>) -> Value {
+        let params = if let Some(optional_params) = optional_params {
+            set_params![
+                ("limit", optional_params.limit),
+                ("offset", optional_params.offset)
+            ]
+        } else { vec![] };
         let url = build_query(api::FOLLOWING, &params);
         let headers = build_oauth_headers(
             "GET",
