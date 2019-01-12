@@ -27,6 +27,8 @@ pub struct GetUserDashboardRequest<'a> {
 }
 
 impl<'a> GetUserDashboardRequest<'a> {
+    fn new() -> GetUserDashboardRequest { GetUserDashboardRequest::default() }
+
     set_attr!(self, limit, &'a str);
     set_attr!(self, offset, &'a str);
     set_attr!(self, r#type, &'a str);
@@ -44,6 +46,8 @@ pub struct GetUserLikesRequest<'a> {
 }
 
 impl<'a> GetUserLikesRequest<'a> {
+    fn new() -> GetUserLikesRequest { GetUserLikesRequest::default() }
+
     set_attr!(self, limit, &'a str);
     set_attr!(self, offset, &'a str);
     set_attr!(self, before, &'a str);
@@ -57,6 +61,8 @@ pub struct GetUserFollowingRequest<'a> {
 }
 
 impl<'a> GetUserFollowingRequest<'a> {
+    fn new() -> GetUserFollowingRequest { GetUserFollowingRequest::default() }
+
     set_attr!(self, limit, &'a str);
     set_attr!(self, offset, &'a str);
 }
