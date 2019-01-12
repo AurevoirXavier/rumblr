@@ -185,6 +185,29 @@ pub enum PostType<'a> {
     },
 }
 
+#[derive(Default)]
+pub struct LegacyPostRequest<'a> {
+    state: Option<&'a str>,
+    tags: Option<&'a str>,
+    tweet: Option<&'a str>,
+    date: Option<&'a str>,
+    format: Option<&'a str>,
+    slug: Option<&'a str>,
+    native_inline_images: Option<&'a str>,
+}
+
+impl<'a> LegacyPostRequest<'a> {
+    pub fn new() -> LegacyPostRequest<'a> { LegacyPostRequest::default() }
+
+    set_attr!(self, state, &'a str);
+    set_attr!(self, tags, &'a str);
+    set_attr!(self, tweet, &'a str);
+    set_attr!(self, date, &'a str);
+    set_attr!(self, format, &'a str);
+    set_attr!(self, slug, &'a str);
+    set_attr!(self, native_inline_images, &'a str);
+}
+
 impl TumblrClient {
     pub fn get_blog_info(&self, blog_identifier: &str) -> Value {
         let url = format!("{}{}/info?api_key={}", BLOG, blog_identifier, self.keys.consumer_key);
@@ -351,19 +374,7 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn legacy_post(
-        &self,
-        blog_identifier: &str,
-        state: Option<&str>,
-        tags: Option<&str>,
-        tweet: Option<&str>,
-        date: Option<&str>,
-        format: Option<&str>,
-        slug: Option<&str>,
-        native_inline_images: Option<&str>,
-        posts_action: PostAction,
-        posts_type: PostType,
-    ) -> Value {
+    pub fn legacy_post(&self, blog_identifier: &str, posts_action: PostAction, posts_type: PostType, request: LegacyPostRequest, ) -> Value {
         // --- custom ---
         use self::{
             PostAction::*,
@@ -372,14 +383,15 @@ impl TumblrClient {
 
         let api;
         let params = {
-            let mut v = vec![];
-            if let Some(state) = state { v.push(("state", state)); }
-            if let Some(tags) = tags { v.push(("tags", tags)); }
-            if let Some(tweet) = tweet { v.push(("tweet", tweet)); }
-            if let Some(date) = date { v.push(("date", date)); }
-            if let Some(format) = format { v.push(("format", format)); }
-            if let Some(slug) = slug { v.push(("slug", slug)); }
-            if let Some(native_inline_images) = native_inline_images { v.push(("native_inline_images", native_inline_images)); }
+            let mut v = set_params![
+                ("state", request.state),
+                ("tags", request.tags),
+                ("tweet", request.tweet),
+                ("date", request.date),
+                ("format", request.format),
+                ("slug", request.slug),
+                ("native_inline_images", request.native_inline_images),
+            ];
 
             match posts_action {
                 New => {
