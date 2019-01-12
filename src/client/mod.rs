@@ -1,8 +1,8 @@
 mod oauth;
 
 macro_rules! set_attr {
-    ($self_:ident, $attr:ident, $type:ty) => {
-        pub fn $attr(mut $self_, $attr: $type) -> Self {
+    ($self_:ident, $attr:ident) => {
+        pub fn $attr(mut $self_, $attr: &'a str) -> Self {
             $self_.$attr = Some($attr);
             $self_
         }
