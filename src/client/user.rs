@@ -50,6 +50,17 @@ impl<'a> GetUserLikesRequest<'a> {
     set_attr!(self, after, &'a str);
 }
 
+#[derive(Default)]
+pub struct GetUserFollowingRequest<'a> {
+    limit: Option<&'a str>,
+    offset: Option<&'a str>,
+}
+
+impl<'a> GetUserFollowingRequest<'a> {
+    set_attr!(self, limit, &'a str);
+    set_attr!(self, offset, &'a str);
+}
+
 impl TumblrClient {
     pub fn get_user_info(&self) -> Value {
         let headers = build_oauth_headers(
@@ -66,7 +77,7 @@ impl TumblrClient {
     }
 
     pub fn get_user_dashboard(&self, request: GetUserDashboardRequest) -> Value {
-        let params = set_params! [
+        let params = set_params![
             ("limit", request.limit),
             ("offset", request.offset),
             ("type", request.r#type),
@@ -89,7 +100,7 @@ impl TumblrClient {
     }
 
     pub fn get_user_likes(&self, request: GetUserLikesRequest) -> Value {
-        let params = set_params! [
+        let params = set_params![
             ("limit", request.limit),
             ("offset", request.offset),
             ("before", request.before),
@@ -109,18 +120,11 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_user_following(
-        &self,
-        limit: Option<&str>,
-        offset: Option<&str>,
-    ) -> Value {
-        let params = {
-            let mut v = vec![];
-            if let Some(limit) = limit { v.push(("limit", limit)); }
-            if let Some(offset) = offset { v.push(("offset", offset)); }
-
-            v
-        };
+    pub fn get_user_following(&self, request: GetUserFollowingRequest) -> Value {
+        let params = set_params![
+            ("limit", request.limit),
+            ("offset", request.offset)
+        ];
         let url = build_query(api::FOLLOWING, &params);
         let headers = build_oauth_headers(
             "GET",
