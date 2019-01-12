@@ -18,6 +18,8 @@ macro_rules! set_params {
     }}
 }
 
+macro_rules! build_url { ($url:expr, [$(($name:expr, $value:expr)),*]) => { $(if let Some(value) = $value { $url += &format!("&{}={}", $name, value); })* }; }
+
 pub mod user;
 pub mod blog;
 
