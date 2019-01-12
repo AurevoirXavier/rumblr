@@ -35,14 +35,7 @@ fn main() {
     println!(
         "{:?}",
         client.legacy_post(
-            "your tumblr domain [e.g. (david.tumblr.com)]",
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
+            "cestxavier.tumblr.com",
             rumblr::PostAction::New,
             rumblr::PostType::Photo {
                 caption: None,
@@ -51,6 +44,7 @@ fn main() {
                 data: None,
                 data64: None,
             },
+            None
         )
     );
 }
@@ -63,7 +57,7 @@ extern crate rumblr;
 extern crate serde_json;
 
 // --- external ---
-use rumblr::TumblrClient;
+use rumblr::{TumblrClient, GetBlogPostsOptionalParams};
 use serde_json::Value;
 
 fn main() {
@@ -76,16 +70,13 @@ fn main() {
     let limit = 10;
     for i in 0u32.. {
         let resp: Value = client.get_blog_posts(
-            "target tumblr domain [e.g. (david.tumblr.com)]",
-            Some("photo"),
-            None,
-            None,
-            Some(&limit.to_string()),
-            Some(&(i * limit).to_string()),
-            None,
-            None,
-            None,
-            None,
+            "h2artbeat.tumblr.com",
+            Some(
+                GetBlogPostsOptionalParams::new()
+                    .r#type("photo")
+                    .limit(&limit.to_string())
+                    .offset(&(i * limit).to_string())
+            )
         );
 
         let path = "export";
