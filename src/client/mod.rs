@@ -10,12 +10,12 @@ macro_rules! set_attr {
 }
 
 macro_rules! set_params {
-    {$(($name:expr, $value:expr)),*} => {{
+    [$(($name:expr, $value:expr)),*} => {{
         let mut v = Vec::new();
         $(if let Some(value) = $value { v.push(($name, value)); })*
 
         v
-    }}
+    }]
 }
 
 pub mod user;
