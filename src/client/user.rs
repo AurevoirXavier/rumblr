@@ -16,6 +16,25 @@ use serde_json::Value;
 // --- custom ---
 use super::{TumblrClient, build_oauth_headers, build_query, build_params};
 
+#[derive(Default)]
+pub struct GetUserDashboradRequest<'a> {
+    limit: Option<&'a str>,
+    offset: Option<&'a str>,
+    r#type: Option<&'a str>,
+    since_id: Option<&'a str>,
+    reblog_info: Option<&'a str>,
+    notes_info: Option<&'a str>,
+}
+
+impl<'a> GetUserDashboradRequest<'a> {
+    set_attr!(self, limit, &'a str);
+    set_attr!(self, offset, &'a str);
+    set_attr!(self, r#type, &'a str);
+    set_attr!(self, r#since_id, &'a str);
+    set_attr!(self, r#reblog_info, &'a str);
+    set_attr!(self, r#notes_info, &'a str);
+}
+
 impl TumblrClient {
     pub fn get_user_info(&self) -> Value {
         let headers = build_oauth_headers(
@@ -31,25 +50,14 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_user_dashboard(
-        &self,
-        limit: Option<&str>,
-        offset: Option<&str>,
-        r#type: Option<&str>,
-        since_id: Option<&str>,
-        reblog_info: Option<&str>,
-        notes_info: Option<&str>,
-    ) -> Value {
-        let params = {
-            let mut v = vec![];
-            if let Some(limit) = limit { v.push(("limit", limit)); }
-            if let Some(offset) = offset { v.push(("offset", offset)); }
-            if let Some(r#type) = r#type { v.push(("type", r#type)); }
-            if let Some(since_id) = since_id { v.push(("since_id", since_id)); }
-            if let Some(reblog_info) = reblog_info { v.push(("reblog_info", reblog_info)); }
-            if let Some(notes_info) = notes_info { v.push(("notes_info", notes_info)); }
-
-            v
+    pub fn get_user_dashboard(&self, request: GetUserDashboradRequest) -> Value {
+        let params = set_params! {
+            ("limit", request.limit),
+            ("offset", request.offset),
+            ("type", request.r#type),
+            ("since_id", request.since_id),
+            ("reblog_info", request.reblog_info),
+            ("notes_info", request.notes_info)
         };
         let url = build_query(api::DASHBOARD, &params);
         let headers = build_oauth_headers(
