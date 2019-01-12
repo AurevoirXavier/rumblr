@@ -108,6 +108,19 @@ impl<'a> GetBlogPostsQueueRequest<'a> {
     set_attr!(self, filter, &'a str);
 }
 
+#[derive(Default)]
+pub struct GetBlogPostsDraftRequest<'a> {
+    before_id: Option<&'a str>,
+    filter: Option<&'a str>,
+}
+
+impl<'a> GetBlogPostsDraftRequest<'a> {
+    pub fn new() -> GetBlogPostsDraftRequest<'a> { GetBlogPostsDraftRequest::default() }
+
+    set_attr!(self, before_id, &'a str);
+    set_attr!(self, filter, &'a str);
+}
+
 pub enum PostAction<'a> {
     New,
     Edit(&'a str),
@@ -285,20 +298,12 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_posts_draft(
-        &self,
-        blog_identifier: &str,
-        before_id: Option<&str>,
-        filter: Option<&str>,
-    ) -> Value {
+    pub fn get_blog_posts_draft(&self, blog_identifier: &str, request: GetBlogPostsDraftRequest) -> Value {
         let api = format!("{}{}/posts/draft", BLOG, blog_identifier);
-        let params = {
-            let mut v = vec![];
-            if let Some(before_id) = before_id { v.push(("before_id", before_id)); }
-            if let Some(filter) = filter { v.push(("filter", filter)); }
-
-            v
-        };
+        let params = set_params![
+            ("before_id", request.before_id),
+            ("filter", request.filter)
+        ];
         let url = build_query(&api, &params);
         let headers = build_oauth_headers(
             "GET",
