@@ -1,5 +1,24 @@
 mod oauth;
-mod user;
+
+macro_rules! set_attr {
+    ($self_:ident, $attr:ident, $type:ty) => {
+        pub fn $attr(mut $self_, $attr: $type) -> Self {
+            $self_.$attr = Some($attr);
+            $self_
+        }
+    };
+}
+
+macro_rules! set_params {
+    {$(($name:expr, $value:expr)),*} => {{
+        let mut v = Vec::new();
+        $(if let Some(value) = $value { v.push(($name, value)); })*
+
+        v
+    }}
+}
+
+pub mod user;
 pub mod blog;
 
 // --- std ---
