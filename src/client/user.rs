@@ -17,7 +17,7 @@ use serde_json::Value;
 use super::{TumblrClient, build_oauth_headers, build_query, build_params};
 
 #[derive(Default)]
-pub struct GetUserDashboradRequest<'a> {
+pub struct GetUserDashboardRequest<'a> {
     limit: Option<&'a str>,
     offset: Option<&'a str>,
     r#type: Option<&'a str>,
@@ -26,7 +26,7 @@ pub struct GetUserDashboradRequest<'a> {
     notes_info: Option<&'a str>,
 }
 
-impl<'a> GetUserDashboradRequest<'a> {
+impl<'a> GetUserDashboardRequest<'a> {
     set_attr!(self, limit, &'a str);
     set_attr!(self, offset, &'a str);
     set_attr!(self, r#type, &'a str);
@@ -50,7 +50,7 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_user_dashboard(&self, request: GetUserDashboradRequest) -> Value {
+    pub fn get_user_dashboard(&self, request: GetUserDashboardRequest) -> Value {
         let params = set_params! {
             ("limit", request.limit),
             ("offset", request.offset),
