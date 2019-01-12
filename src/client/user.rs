@@ -35,6 +35,21 @@ impl<'a> GetUserDashboardRequest<'a> {
     set_attr!(self, notes_info, &'a str);
 }
 
+#[derive(Default)]
+pub struct GetUserLikesRequest<'a> {
+    limit: Option<&'a str>,
+    offset: Option<&'a str>,
+    before: Option<&'a str>,
+    after: Option<&'a str>,
+}
+
+impl<'a> GetUserLikesRequest<'a> {
+    set_attr!(self, limit, &'a str);
+    set_attr!(self, offset, &'a str);
+    set_attr!(self, before, &'a str);
+    set_attr!(self, after, &'a str);
+}
+
 impl TumblrClient {
     pub fn get_user_info(&self) -> Value {
         let headers = build_oauth_headers(
@@ -73,22 +88,13 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_user_likes(
-        &self,
-        limit: Option<&str>,
-        offset: Option<&str>,
-        before: Option<&str>,
-        after: Option<&str>,
-    ) -> Value {
-        let params = {
-            let mut v = vec![];
-            if let Some(limit) = limit { v.push(("limit", limit)); }
-            if let Some(offset) = offset { v.push(("offset", offset)); }
-            if let Some(before) = before { v.push(("before", before)); }
-            if let Some(after) = after { v.push(("after", after)); }
-
-            v
-        };
+    pub fn get_user_likes(&self, request: GetUserLikesRequest) -> Value {
+        let params = set_params! [
+            ("limit", request.limit),
+            ("offset", request.offset),
+            ("before", request.before),
+            ("after", request.after)
+        ];
         let url = build_query(api::LIKES, &params);
         let headers = build_oauth_headers(
             "GET",
