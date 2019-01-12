@@ -251,12 +251,12 @@ impl TumblrClient {
 
     pub fn get_blog_following(&self, blog_identifier: &str, optional_params: Option<GetBlogFollowingOptionalParams>) -> Value {
         let api = format!("{}{}/following", BLOG, blog_identifier);
-        let params = if let Some() = {
+        let params = if let Some(optional_params) = optional_params {
             set_params![
                 ("limit", optional_params.limit),
                 ("offset", optional_params.offset)
             ]
-        }else { vec![] };
+        } else { vec![] };
         let url = build_query(&api, &params);
         let headers = build_oauth_headers(
             "GET",
