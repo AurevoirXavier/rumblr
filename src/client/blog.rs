@@ -6,6 +6,23 @@ use super::{TumblrClient, build_oauth_headers, build_query, build_params};
 
 const BLOG: &'static str = "https://api.tumblr.com/v2/blog/";
 
+#[derive(Default)]
+pub struct GetBlogAvatarRequest<'a> { size: Option<&'a str> }
+
+impl<'a> GetBlogAvatarRequest<'a> {
+    pub fn new() -> GetBlogAvatarRequest<'a> { GetBlogAvatarRequest::default() }
+
+    pub fn size(mut self, size: &'a str) -> Self {
+        match size {
+            "16"| "24"| "30"| "40"| "48"| "64"| "96"| "128"| "512" => {
+                self.size = Some(size);
+                self
+            },
+            _ => panic!("The size of the avatar (square, one value for both length and width). Must be one of the values: 16, 24, 30, 40, 48, 64, 96, 128, 512")
+        }
+    }
+}
+
 pub enum PostAction<'a> {
     New,
     Edit(&'a str),
@@ -65,9 +82,9 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_avatar(&self, blog_identifier: &str, size: Option<&str>) -> Vec<u8> {
+    pub fn get_blog_avatar(&self, blog_identifier: &str, request: GetBlogAvatarRequest) -> Vec<u8> {
         let mut url = format!("{}{}/avatar/", BLOG, blog_identifier);
-        if let Some(size) = size { url += size; }
+        if let Some(size) = request.size { url += size; }
 
         let mut bytes = vec![];
         self.get(&url, None)

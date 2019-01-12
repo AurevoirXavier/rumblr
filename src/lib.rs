@@ -9,7 +9,7 @@ extern crate serde_json;
 
 pub use self::client::{
     TumblrClient,
-    blog::{PostAction, PostType},
+    blog::{GetBlogAvatarRequest, PostAction, PostType},
     user::{GetUserDashboardRequest, GetUserLikesRequest, GetUserFollowingRequest},
 };
 
