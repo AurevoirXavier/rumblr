@@ -94,14 +94,14 @@ impl<'a> GetBlogPostsRequest<'a> {
 }
 
 #[derive(Default)]
-pub struct GetBlogPostsQueue<'a> {
+pub struct GetBlogPostsQueueRequest<'a> {
     limit: Option<&'a str>,
     offset: Option<&'a str>,
     filter: Option<&'a str>,
 }
 
-impl<'a> GetBlogPostsQueue<'a> {
-    pub fn new() -> GetBlogPostsQueue<'a> { GetBlogPostsQueue::default() }
+impl<'a> GetBlogPostsQueueRequest<'a> {
+    pub fn new() -> GetBlogPostsQueueRequest<'a> { GetBlogPostsQueueRequest::default() }
 
     set_attr!(self, limit, &'a str);
     set_attr!(self, offset, &'a str);
@@ -264,7 +264,7 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_posts_queue(&self, blog_identifier: &str, request: GetBlogPostsQueue) -> Value {
+    pub fn get_blog_posts_queue(&self, blog_identifier: &str, request: GetBlogPostsQueueRequest) -> Value {
         let api = format!("{}{}/posts/queue", BLOG, blog_identifier);
         let params = set_params![
             ("limit", request.limit),
