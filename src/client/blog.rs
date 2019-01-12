@@ -41,13 +41,13 @@ impl<'a> GetBlogLikesOptionalParams<'a> {
 }
 
 #[derive(Default)]
-pub struct GetBlogFollowingRequest<'a> {
+pub struct GetBlogFollowingOptionalParams<'a> {
     limit: Option<&'a str>,
     offset: Option<&'a str>,
 }
 
-impl<'a> GetBlogFollowingRequest<'a> {
-    pub fn new() -> GetBlogFollowingRequest<'a> { GetBlogFollowingRequest::default() }
+impl<'a> GetBlogFollowingOptionalParams<'a> {
+    pub fn new() -> GetBlogFollowingOptionalParams<'a> { GetBlogFollowingOptionalParams::default() }
 
     set_attr!(self, limit);
     set_attr!(self, offset);
@@ -249,12 +249,14 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_following(&self, blog_identifier: &str, request: GetBlogFollowingRequest) -> Value {
+    pub fn get_blog_following(&self, blog_identifier: &str, optional_params: Option<GetBlogFollowingOptionalParams>) -> Value {
         let api = format!("{}{}/following", BLOG, blog_identifier);
-        let params = set_params![
-            ("limit", request.limit),
-            ("offset", request.offset)
-        ];
+        let params = if let Some() = {
+            set_params![
+                ("limit", optional_params.limit),
+                ("offset", optional_params.offset)
+            ]
+        }else { vec![] };
         let url = build_query(&api, &params);
         let headers = build_oauth_headers(
             "GET",

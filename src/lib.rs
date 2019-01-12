@@ -12,7 +12,7 @@ pub use self::client::{
     blog::{
         GetBlogAvatarOptionalParams,
         GetBlogLikesOptionalParams,
-        GetBlogFollowingRequest,
+        GetBlogFollowingOptionalParams,
         GetBlogFollowersOptionalParams,
         GetBlogPostsOptionalParams,
         GetBlogPostsQueueOptionalParams,
