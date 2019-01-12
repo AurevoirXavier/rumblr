@@ -30,16 +30,9 @@ impl<'a> GetUserDashboardRequest<'a> {
     set_attr!(self, limit, &'a str);
     set_attr!(self, offset, &'a str);
     set_attr!(self, r#type, &'a str);
-    set_attr!(self, r#since_id, &'a str);
-    set_attr!(self, r#reblog_info, &'a str);
-    set_attr!(self, r#notes_info, &'a str);
-}
-
-pub struct GetUserLikesRequest<'a> {
-    limit: Option<&'a str>,
-    offset: Option<&'a str>,
-    before: Option<&'a str>,
-    after: Option<&'a str>,
+    set_attr!(self, since_id, &'a str);
+    set_attr!(self, reblog_info, &'a str);
+    set_attr!(self, notes_info, &'a str);
 }
 
 impl TumblrClient {
