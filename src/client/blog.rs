@@ -66,6 +66,33 @@ impl<'a> GetBlogFollowersRequest<'a> {
     set_attr!(self, offset, &'a str);
 }
 
+#[derive(Default)]
+pub struct GetBlogPostsRequest<'a> {
+    r#type: Option<&'a str>,
+    id: Option<&'a str>,
+    tag: Option<&'a str>,
+    limit: Option<&'a str>,
+    offset: Option<&'a str>,
+    reblog_info: Option<&'a str>,
+    notes_info: Option<&'a str>,
+    filter: Option<&'a str>,
+    before: Option<&'a str>,
+}
+
+impl<'a> GetBlogPostsRequest<'a> {
+    pub fn new() -> GetBlogPostsRequest<'a> { GetBlogPostsRequest::default() }
+
+    set_attr!(self, r#type, &'a str);
+    set_attr!(self, id, &'a str);
+    set_attr!(self, tag, &'a str);
+    set_attr!(self, limit, &'a str);
+    set_attr!(self, offset, &'a str);
+    set_attr!(self, reblog_info, &'a str);
+    set_attr!(self, notes_info, &'a str);
+    set_attr!(self, filter, &'a str);
+    set_attr!(self, before, &'a str);
+}
+
 pub enum PostAction<'a> {
     New,
     Edit(&'a str),
@@ -194,34 +221,28 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_posts(
-        &self,
-        blog_identifier: &str,
-        r#type: Option<&str>,
-        id: Option<&str>,
-        tag: Option<&str>,
-        limit: Option<&str>,
-        offset: Option<&str>,
-        reblog_info: Option<&str>,
-        notes_info: Option<&str>,
-        filter: Option<&str>,
-        before: Option<&str>,
-    ) -> Value {
+    pub fn get_blog_posts(&self, blog_identifier: &str, request: GetBlogPostsRequest) -> Value {
         let mut url = format!(
             "{}{}/posts{}?api_key={}",
             BLOG,
             blog_identifier,
-            if let Some(r#type) = r#type { format!("/{}", r#type) } else { String::new() },
+            if let Some(r#type) = request.r#type { format!("/{}", r#type) } else { String::new() },
             self.keys.consumer_key,
         );
-        if let Some(id) = id { url += &format!("&id={}", id); }
-        if let Some(tag) = tag { url += &format!("&tag={}", tag); }
-        if let Some(limit) = limit { url += &format!("&limit={}", limit); }
-        if let Some(offset) = offset { url += &format!("&offset={}", offset); }
-        if let Some(reblog_info) = reblog_info { url += &format!("&reblog_info={}", reblog_info); }
-        if let Some(notes_info) = notes_info { url += &format!("&notes_info={}", notes_info); }
-        if let Some(filter) = filter { url += &format!("&filter={}", filter); }
-        if let Some(before) = before { url += &format!("&before={}", before); }
+        build_url!(
+            url,
+            [
+                ("type", request.r#type),
+                ("id", request.id),
+                ("tag", request.tag),
+                ("limit", request.limit),
+                ("offset", request.offset),
+                ("reblog_info", request.reblog_info),
+                ("notes_info", request.notes_info),
+                ("filter", request.filter),
+                ("before", request.before)
+            ]
+        );
 
         self.get(&url, None)
             .json()
