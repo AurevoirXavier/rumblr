@@ -93,6 +93,21 @@ impl<'a> GetBlogPostsRequest<'a> {
     set_attr!(self, before, &'a str);
 }
 
+#[derive(Default)]
+pub struct GetBlogPostsQueue<'a> {
+    limit: Option<&'a str>,
+    offset: Option<&'a str>,
+    filter: Option<&'a str>,
+}
+
+impl<'a> GetBlogPostsQueue<'a> {
+    pub fn new() -> GetBlogPostsQueue<'a> { GetBlogPostsQueue::default() }
+
+    set_attr!(self, limit, &'a str);
+    set_attr!(self, offset, &'a str);
+    set_attr!(self, filter, &'a str);
+}
+
 pub enum PostAction<'a> {
     New,
     Edit(&'a str),
@@ -249,22 +264,13 @@ impl TumblrClient {
             .unwrap()
     }
 
-    pub fn get_blog_posts_queue(
-        &self,
-        blog_identifier: &str,
-        limit: Option<&str>,
-        offset: Option<&str>,
-        filter: Option<&str>,
-    ) -> Value {
+    pub fn get_blog_posts_queue(&self, blog_identifier: &str, request: GetBlogPostsQueue) -> Value {
         let api = format!("{}{}/posts/queue", BLOG, blog_identifier);
-        let params = {
-            let mut v = vec![];
-            if let Some(limit) = limit { v.push(("limit", limit)); }
-            if let Some(offset) = offset { v.push(("offset", offset)); }
-            if let Some(filter) = filter { v.push(("filter", filter)); }
-
-            v
-        };
+        let params = set_params![
+            ("limit", request.limit),
+            ("offset", request.offset),
+            ("filter", request.filter)
+        ];
         let url = build_query(&api, &params);
         let headers = build_oauth_headers(
             "GET",
