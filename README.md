@@ -4,6 +4,8 @@
 
 #### Usage
 
+All client methods sync with [Tumblr API](https://www.tumblr.com/docs/en/api/v2).
+
 [Create a new photo post](https://www.tumblr.com/docs/en/api/v2#post--create-a-new-blog-post-legacy):
 
 ```rust
@@ -120,8 +122,6 @@ fn main() {
     }
 }
 ```
-
-All client methods sync with [Tumblr API](https://www.tumblr.com/docs/en/api/v2).
 
 #### TODO
 
